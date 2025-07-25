@@ -131,11 +131,10 @@ function tryConnectModel() {
 
   // URL y Cabeceras actualizadas para la API Realtime de OpenAI
   session.modelConn = new WebSocket(
-    "wss://api.openai.com/v1/realtime/sessions", // <-- URL NUEVA Y CORRECTA
+    "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2025-06-03", 
     {
       headers: {
         Authorization: `Bearer ${session.openAIApiKey}`,
-        "OpenAI-Assistant-ID": assistantId, // <-- CABECERA NUEVA Y CORRECTA
         "OpenAI-Beta": "realtime=v1",
 
       },
