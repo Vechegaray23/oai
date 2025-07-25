@@ -120,12 +120,22 @@ function tryConnectModel() {
     return;
   if (isOpen(session.modelConn)) return;
 
+  // --- INICIO DE LA CORRECCIÓN ---
+
+  // Obtener el ID del asistente desde las variables de entorno
+  const assistantId = process.env.OPENAI_ASSISTANT_ID;
+  if (!assistantId) {
+    console.error("ERROR: OPENAI_ASSISTANT_ID no está configurado en el archivo .env");
+    return;
+  }
+
+  // URL y Cabeceras actualizadas para la API Realtime de OpenAI
   session.modelConn = new WebSocket(
-    "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17",
+    "wss://api.openai.com/v1/realtime/sessions", // <-- URL NUEVA Y CORRECTA
     {
       headers: {
         Authorization: `Bearer ${session.openAIApiKey}`,
-        "OpenAI-Beta": "realtime=v1",
+        "OpenAI-Assistant-ID": assistantId, // <-- CABECERA NUEVA Y CORRECTA
       },
     }
   );
