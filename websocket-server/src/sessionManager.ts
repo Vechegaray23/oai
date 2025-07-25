@@ -136,6 +136,8 @@ function tryConnectModel() {
       headers: {
         Authorization: `Bearer ${session.openAIApiKey}`,
         "OpenAI-Assistant-ID": assistantId, // <-- CABECERA NUEVA Y CORRECTA
+        "OpenAI-Beta": "realtime=v1",
+
       },
     }
   );
@@ -157,7 +159,10 @@ function tryConnectModel() {
   });
 
   session.modelConn.on("message", handleModelMessage);
-  session.modelConn.on("error", closeModel);
+    session.modelConn.on("error", (err) => {
+    console.error("OpenAI WebSocket error:", err);
+    closeModel();
+  });
   session.modelConn.on("close", closeModel);
 }
 
